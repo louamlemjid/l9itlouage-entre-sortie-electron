@@ -1,7 +1,41 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { 
+  app,
+  shell,
+  BrowserWindow,
+  ipcMain ,
+  dialog,
+  webContents,
+  session,
+  protocol,
+  Menu,
+  Tray,
+Notification} from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import {mongoose} from 'mongoose';
+import { join } from 'path'
+import dotenv from 'dotenv';
+import { 
+  Louaje,
+  Station,
+  Passenger,
+  Ticket,
+  CityList } from "./db"
+
+
+mongoose.connect("mongodb+srv://louam-lemjid:8hAgfKf2ZDauLxoj@cluster0.mjqmopn.mongodb.net/Louajedb");
+
+const db = mongoose.connection;
+
+
+
+
+let mainWindow;
+let tray;
+let notification;
+let entreeAlert;
+let sortieAlert;
 
 function createWindow() {
   // Create the browser window.
