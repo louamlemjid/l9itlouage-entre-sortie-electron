@@ -1,6 +1,7 @@
+// file = Html5QrcodePlugin.jsx
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import { useEffect } from 'react';
-
+import { useEffect,useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const qrcodeRegionId = "html5qr-code-full-region";
 
 // Creates the configuration object for Html5QrcodeScanner.
@@ -22,7 +23,7 @@ const createConfig = (props) => {
 };
 
 const Html5QrcodePlugin = (props) => {
-
+    const navi = useNavigate();
     useEffect(() => {
         // when component mounts
         const config = createConfig(props);
@@ -32,8 +33,16 @@ const Html5QrcodePlugin = (props) => {
             throw "qrCodeSuccessCallback is required callback.";
         }
         const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose);
-        html5QrcodeScanner.render(props.qrCodeSuccessCallback, props.qrCodeErrorCallback);
-
+        html5QrcodeScanner.render((decodedText, decodedResult) => {
+            console.log(decodedText)
+            window.electron.ipcRenderer.send(props.channel,decodedText)
+            navi("/menu/success",{
+                state: {
+                  message:props.channel=='scan-entree'?'مرحبا بيك في المحطة':'طريق السلامة, رعاك الله' ,
+                }})
+          
+          }, props.qrCodeErrorCallback);
+        console.log("loaded")
         // cleanup function when component will unmount
         return () => {
             html5QrcodeScanner.clear().catch(error => {
