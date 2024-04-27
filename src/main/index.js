@@ -22,8 +22,8 @@ import {
   CityList } from "./db"
 import { reverse } from 'dns/promises';
 
-
-mongoose.connect(process.env.MONGODB_LINK);
+console.log(import.meta.env.VITE_MONGODB_LINK)
+mongoose.connect(import.meta.env.VITE_MONGODB_LINK);
 
 const db = mongoose.connection;
 
