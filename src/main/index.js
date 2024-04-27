@@ -13,6 +13,7 @@ import icon from '../../resources/icon.png?asset'
 import {mongoose} from 'mongoose';
 
 import dotenv from 'dotenv';
+dotenv.config()
 import { 
   Louaje,
   Station,
@@ -22,7 +23,7 @@ import {
 import { reverse } from 'dns/promises';
 
 
-mongoose.connect("mongodb+srv://louam-lemjid:8hAgfKf2ZDauLxoj@cluster0.mjqmopn.mongodb.net/Louajedb");
+mongoose.connect(process.env.MONGODB_LINK);
 
 const db = mongoose.connection;
 
